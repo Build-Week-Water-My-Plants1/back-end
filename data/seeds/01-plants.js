@@ -1,13 +1,10 @@
 
-exports.seed = function(knex) {
-  // Deletes ALL existing entries
-  return knex('table_name').del()
-    .then(function () {
-      // Inserts seed entries
-      return knex('table_name').insert([
-        {id: 1, colName: 'rowValue1'},
-        {id: 2, colName: 'rowValue2'},
-        {id: 3, colName: 'rowValue3'}
-      ]);
-    });
-};
+exports.seed = async function(knex) {
+  await knex('plants').insert([
+    {name: 'Croton', type: 'Common Croton', location: 'backyard', user_id: 1},
+    {name: 'Dandelion', type: 'Common Dandelion', location: 'backyard', user_id: 1},
+    {name: 'Orchid', type: 'Common Orchid', location: 'backyard', user_id: 1},
+    {name: 'Dracaena', type: 'Common Dracaena', location: 'backyard', user_id: 1},
+    {name: 'Bamboo', type: 'Common Bamboo', location: 'backyard', user_id: 1}
+  ])
+}
