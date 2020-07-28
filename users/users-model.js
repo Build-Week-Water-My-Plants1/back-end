@@ -6,6 +6,7 @@ module.exports = {
     find,
     add,
     findById,
+    findByFilter,
     findBy,
     updateUser,
     getUsers,
@@ -36,6 +37,13 @@ function findById(id) {
       .where("id", id)
       .first()
 }
+
+function findByFilter(filter) {
+    return db("users")
+      .select("*")
+      .where("username", filter)
+      .first();
+  }
 
 async function add(data) {
     const [newUserId] = await db
