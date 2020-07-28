@@ -36,7 +36,7 @@ router.get("/users/:id", (req, res, next) => {
 })
 
 //UPDATE users by ID
-router.put("/users/:id", restrict, async (req, res, next) => { 
+router.put("/users/:id", async (req, res, next) => { 
     try{
       const payload = {
         username: req.body.username,
@@ -65,7 +65,6 @@ router.delete("/users/id", async (req, res, next) => {
         next(err)
     }
 })
-
 
 
 
