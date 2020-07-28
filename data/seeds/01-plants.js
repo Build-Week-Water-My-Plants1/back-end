@@ -1,10 +1,10 @@
 
 exports.seed = async function(knex) {
   await knex('plants').insert([
-    {name: 'Croton', type: 'Common Croton', location: 'backyard', user_id: 1},
-    {name: 'Dandelion', type: 'Common Dandelion', location: 'backyard', user_id: 1},
-    {name: 'Orchid', type: 'Common Orchid', location: 'backyard', user_id: 1},
-    {name: 'Dracaena', type: 'Common Dracaena', location: 'backyard', user_id: 1},
-    {name: 'Bamboo', type: 'Common Bamboo', location: 'backyard', user_id: 1}
+    {nickname: 'Croton', species: 'Common Croton', h2oFrequency: 'once a week', user_id: 1},
+    {nickname: 'Dandelion', species: 'Common Dandelion', h2oFrequency: 'twice a week', user_id: 1},
+    {nickname: 'Orchid', species: 'Common Orchid', h2oFrequency: 'twice a week', user_id: 2},
+    {nickname: 'Dracaena', species: 'Common Dracaena', h2oFrequency: 'once a month', user_id: 2},
+    {nickname: 'Bamboo', species: 'Common Bamboo', h2oFrequency: 'once a month', user_id: 1}
   ])
 }
