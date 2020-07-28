@@ -3,6 +3,9 @@ const server = express()
 //importing middleware
 const cors = require('cors')
 const helmet = require('helmet')
+const morgan = require('morgan')
+
+
 const authenticate = require('../middleware/auth-middleware')
 
 //ENV
@@ -14,6 +17,7 @@ dotenv.config()
 server.use(express.json())
 server.use(helmet())
 server.use(cors())
+server.use(morgan())
 
 //import server routes
 const authRouter = require("../auth/auth-router")
@@ -27,6 +31,16 @@ server.get('/', (req, res) => {
     res.json({
         message: "Water My Plants App"
     })
+})
+
+server.use((err, req, res, next) => {
+    const statusCode = err.statusCode || 500
+    if (err) {
+        return res.status(statusCode).json({
+            message: err.message || "Something went wrong"
+        })
+    }
+    next()
 })
 
 
