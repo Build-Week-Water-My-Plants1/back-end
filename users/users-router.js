@@ -1,12 +1,24 @@
 const router = require("express").Router()
-const user = require("../users/users-model")
+const users_model = require("../users/users-model")
+
+//GET users
+router.get("/users", async (req, res, next) => {
+    try {
+      const users = await users_model.getUsers()
+  
+      res.status(200).json(users)
+  
+    } catch(err) {
+      next(err)
+    }
+})
 
 
-
-router.get("/:id", (req, res, next) => {
+//GET user by ID
+router.get("/users/:id", (req, res, next) => {
     const { id } = req.params
 
-    users
+    users_model
         .findById(id)
         .then(user => {
             if (user) {
@@ -18,37 +30,34 @@ router.get("/:id", (req, res, next) => {
             }
         })
         .catch(err => {
-            next(err)
-        })    
+        next(err)
+    })    
 
 })
 
-router.put("/:id", async (req, res, next) => {
-    const { id } = req.params
-    const changes = req.body
-    users
-        .findById(id)
-        .then(user => {
-            if (user) {
-                users.updateUser(changes, id).then(updatedUser => {
-                    res.status(200).json({ updatedUser })
-                })
-            } else {
-                res.status(404).json({
-                    message: "Could not find user with given id"
-                })
-            }
-        })
-        .catch(err => {
-            next(err)
-        })
-
+//UPDATE users by ID
+router.put("/users/:id", restrict, async (req, res, next) => { 
+    try{
+      const payload = {
+        username: req.body.username,
+        password: await bcrypt.hash(req.body.password, 10),
+        phone_number: req.body.phone_number,
+      }
+  
+      const updatedUser = await users_model.updateUser(payload, req.params.id)
+  
+      res.status(200).json(updatedUser)
+  
+    } catch(err) {
+      next(err)
+    }
 })
 
-router.delete("/id", async (req, res, next) => {
+//DELETE by users ID
+router.delete("/users/id", async (req, res, next) => {
     try {
         const { id } = req.params
-        const deleteUser = await users.removeUser(id)
+        const deleteUser = await users_model.removeUser(id)
         res.status(200).json({
             message: `Successfully deleted users profile`
         })

@@ -1,5 +1,5 @@
 const router = require("express").Router()
-const users = require("../users/users-model")
+const users_model = require("../users/users-model")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const secret = require("../config/secrets")
@@ -21,7 +21,7 @@ router.post("/register", async (req, res, next) => {
 
     if (username && password && phone_number) {
         try {
-            const user = await users.add(req.body)
+            const user = await users_model.add(req.body)
             const token = generateToken(user)
             res.status(201).json({ token, message: `Welcome ${user.username}` })
         } catch (err) {
@@ -59,7 +59,7 @@ router.post("/register", async (req, res, next) => {
 router.post("/login", async (req, res, next) => {
     try {
       const { username, password } = req.body;
-      const user = await users.findByFilter(username).first();
+      const user = await users_model.findByFilter(username)
   
       if(!user) {
         return res.status(401).json({ message: "Username not found!" })
@@ -74,7 +74,7 @@ router.post("/login", async (req, res, next) => {
         userId: user.id,
         username: user.username,
       }
-      const plants = await users.getUserPlants(user.id) // user's plants
+      const plants = await users_model.getUserPlants(user.id) // user's plants
       res.status(201).json({ // Returns all user info except password.
         message: `Welcome ${user.username}`,
         token: jwt.sign(payload, process.env.JWT_SECRET),
