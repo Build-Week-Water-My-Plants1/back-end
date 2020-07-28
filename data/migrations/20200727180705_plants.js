@@ -1,9 +1,9 @@
 exports.up = async function(knex) {
     await knex.schema.createTable("users", table => {
-        table
-            .increments("id")
-            .notNullable()
-            .unique()
+        // table
+        //     .increments("id")
+        //     .notNullable()
+        //     .unique()
         table
             .string("phone_number")
             .notNullable()

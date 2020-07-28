@@ -17,10 +17,10 @@ function generateToken(user) {
 }
 
 router.post("/signup", async (req, res, next) => {
-    const { username, password } = req.body
+    const { username, password, phone_number } = req.body
 
     //include validation for unique username
-    if (username && password) {
+    if (username && password && phone_number) {
         try {
             const user = await users.add(req.body)
             const token = generateToken(user)
@@ -30,7 +30,7 @@ router.post("/signup", async (req, res, next) => {
             next(err)
         }
     } else {
-        res.status(401).json({ message: "Please include username & password" })
+        res.status(401).json({ message: "Please include username & password & phone number" })
     }
 })
 
