@@ -5,6 +5,7 @@ module.exports = {
     connection: {
       filename: './data/my_plants.db3'
     },
+    useNullAsDefault: true,
     migrations: {
       directory: "./data/migrations",
       tableName: "knex_migrations"
@@ -12,7 +13,11 @@ module.exports = {
     seeds: {
       directory: "./data/seeds"
     },
-    useNullAsDefault: true
+    pool: {
+      afterCreate: (conn, done) => {
+        conn.run("PRAGMA foreign_keys = ON", done)
+      }
+    }
   },
   
 };
