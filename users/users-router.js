@@ -30,7 +30,7 @@ router.put("/:id", async (req, res, next) => {
         .findById(id)
         .then(user => {
             if (user) {
-                users.update(changes, id).then(updatedUser => {
+                users.updateUser(changes, id).then(updatedUser => {
                     res.status(200).json({ updatedUser })
                 })
             } else {
@@ -48,7 +48,7 @@ router.put("/:id", async (req, res, next) => {
 router.delete("/id", async (req, res, next) => {
     try {
         const { id } = req.params
-        const deleteUser = await users.remove(id)
+        const deleteUser = await users.removeUser(id)
         res.status(200).json({
             message: `Successfully deleted users profile`
         })
