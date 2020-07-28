@@ -1,0 +1,65 @@
+const router = require("express").Router()
+const user = require("../users/users-model")
+
+
+
+router.get("/:id", (req, res, next) => {
+    const { id } = req.params
+
+    users
+        .findById(id)
+        .then(user => {
+            if (user) {
+                res.status(200).json(user)
+            } else {
+                res.status(404).json({
+                    message: "Could not find user with given id"
+                })
+            }
+        })
+        .catch(err => {
+            next(err)
+        })    
+
+})
+
+router.put("/:id", async (req, res, next) => {
+    const { id } = req.params
+    const changes = req.body
+    users
+        .findById(id)
+        .then(user => {
+            if (user) {
+                users.update(changes, id).then(updatedUser => {
+                    res.status(200).json({ updatedUser })
+                })
+            } else {
+                res.status(404).json({
+                    message: "Could not find user with given id"
+                })
+            }
+        })
+        .catch(err => {
+            next(err)
+        })
+
+})
+
+router.delete("/id", async (req, res, next) => {
+    try {
+        const { id } = req.params
+        const deleteUser = await users.remove(id)
+        res.status(200).json({
+            message: `Successfully deleted users profile`
+        })
+    } catch (err) {
+        next(err)
+    }
+})
+
+
+
+
+
+module.exports = router
+
