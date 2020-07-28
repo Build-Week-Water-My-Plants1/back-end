@@ -16,7 +16,7 @@ function generateToken(user) {
     return jwt.sign(payload, secret.jwtSecret, options)
 }
 
-router.post("/signup", async (req, res, next) => {
+router.post("/register", async (req, res, next) => {
     const { username, password, phone_number } = req.body
 
     //include validation for unique username

@@ -3,80 +3,116 @@ const bcrypt = require("bcryptjs")
 
 
 module.exports = {
-    register,
-    login,
     find,
     add,
     findById,
     findBy,
-    remove,
-    update
+    updateUser,
+    getUsers,
+    getUserPlant,
+    addPlant,
+    updatePlant,
+    removePlant,
+    removeUser
 }
 
-async function register(data){
-    const {password} = data;
-    data.password = hash(password);
-
-    const [id] = await  db('users').insert(data, 'id')
-    const user = await getUserBy({id});
-
-    return user;
-}
-
-function login(data){
-    const {username,password} = data;
-
-    return getUserBy({username}).then(user =>{
-        if(user && bcrypt.compareSync(password, user.password)){
-            const token = generateToken(user);
-            return {
-                id:user.id,
-                username:username,
-                token:token
-            }
-        }
-    });
-    ;
-}
-
+//User
 
 function find() {
     return db("users")
       .select("id", "username", "phone_number")
 }
 
-function findById(id) {
-    return db("users")
-      .where({ id })
-      .first()
-}
-
-async function add(user) {
-    user.password = await bcrypt.hash(user.password, 13)
-    return db("users")
-      .insert(user)
-      .returning("*")
-}
-
 function findBy(filter) {
     return db("users")
-      .where(filter)
-      .select()
+        .where(filter)
+        .select()
+        .first()
+}
+
+function findById(id) {
+    return db("users")
+      .select("*")
+      .where("id", id)
       .first()
 }
 
-function remove(id) {
-    return db('users')
-      .where({ id })
-      .delete()
+async function add(data) {
+    const [newUserId] = await db
+      .insert(data, "id")
+      .into("users")
+    const newUser = await db
+      .first("id", "username", "phone_number")
+      .from("users")
+      .where("id", newUserId)
+    return newUser
 }
 
-function update(change, id) {
+function getUsers() {
     return db("users")
-      .where({ id })
-      .update(change)
-      .returning("*")
+      .select("id", "username", "phone_number")
 }
 
+async function updateUser(changes, id) {
+    await db("users")
+      .update(changes)
+      .where("id", id)
+    return await db
+      .first("id", "username", "phone_number")
+      .from("users")
+      .where("id", id)
+      .select("id", "username", "phone_number")
+}
 
+function removeUser(id) {
+    return db("users")
+      .first("*")
+      .where("id", id)
+      .del()
+}
 
+//Plants
+
+async function addPlant(object) {
+    const [newPlantId] = await db
+      .insert(object, "id")
+      .into("plants")
+    const newPlant = await db
+      .first("*")
+      .from("plants")
+      .where("id", newPlantId)
+    return newPlant
+}
+
+function getUserPlant(user_id) {
+    return db("plants")
+      .innerJoin("users as u", "u.id", "plants.user_id")
+      .where("plants.user_id", user_id)
+      .select("plants.id as id", "plants.nickname", "plants.species", "plants.h2oFrequency")
+         
+}
+
+async function updatePlant(changes, id) {
+    await db("plants")
+      .update(changes)
+      .where("id", id)
+    return await db
+      .first("*")
+      .from("plants")
+      .where("id", id)
+}
+
+async function removePlant(id) {
+    const deleted = await db
+      .first("*")
+      .from("plants")
+      .where("id", id)
+    if (deleted) {
+        await db("plants")
+          .where("id", id)
+          .del()
+        return deleted
+    } else {
+        return null
+    }
+}
