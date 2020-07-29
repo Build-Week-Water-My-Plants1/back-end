@@ -18,75 +18,49 @@ function generateToken(user) {
 
 router.post("/register", async (req, res, next) => {
     const { username, password, phone_number } = req.body
+  
+    const hash = bcrypt.hashSync(password, 10)
+    users_model.add({
+    username,
+    phone_number,
+    password: hash,
+  })
+  .then(data => {
+    console.log(data)
+    res.status(200).json({ 
+      username,
+      phone_number,
+      password: hash})
+  })
+  .catch(err => {
+    console.log(err)
+    res.status(500).json({ message: `Something went really poorly` })
+  })
 
-    if (username && password && phone_number) {
-        try {
-            const user = await users_model.add(req.body)
-            const token = generateToken(user)
-            res.status(201).json({ token, message: `Welcome ${user.username}` })
-        } catch (err) {
-            err.statusCode = 409
-            next(err)
-        }
-    } else {
-        res.status(401).json({ message: "Please include username & password & phone number" })
-    }
 })
 
-// router.post("/login", async (req, res, next) => {
-//     try {
-//         const { username, password } = req.body
 
-//         const user = await users.findBy({ username }).first()
-//         const passwordValid = await bcrypt.compare(password, user.password)
-//         if (!user || !passwordValid) {
-//             const error = new Error("Invalid credentials")
-//             error.statusCode = 401
-//             throw error
-//         }
-//         const token = generateToken(user)
 
-//         res.status(200).json({
-//             token,
-//             userID: user.id,
-//             message: `Welcome ${user.username}`
-//         })
-//     } catch (err) {
-//         next(err)
-//     }
-// })
-
-router.post("/login", async (req, res, next) => {
-    try {
-      const { username, password } = req.body;
-      const user = await users_model.findByFilter(username)
-  
-      if(!user) {
-        return res.status(401).json({ message: "Username not found!" })
+router.post('/login', (req, res) => {
+  let { username, password } = req.body;
+  users_model.findBy({ username })
+    .first()
+    .then(user => {
+      if (user && bcrypt.compareSync(password, user.password)) {
+        const token = generateToken(user); // new line
+        // the server needs to return the token to the client
+        // this doesn't happen automatically like it happens with cookies
+        res.status(200).json({
+          message: `Welcome ${user.username}!, have a token...`,
+          token, // attach the token as part of the response
+        });
+      } else {
+        res.status(401).json({ message: 'Invalid Credentials' });
       }
-  
-      const passwordValid = await bcrypt.compare(password, user.password)
-  
-      if(!passwordValid) {
-          return res.status(401).json({ message: "Your password is incorrect!" })
-      }
-      const payload = {
-        userId: user.id,
-        username: user.username,
-      }
-      const plants = await users_model.getUserPlants(user.id) // user's plants
-      res.status(201).json({ // Returns all user info except password.
-        message: `Welcome ${user.username}`,
-        token: jwt.sign(payload, process.env.JWT_SECRET),
-        id: user.id,
-        username: user.username,
-        phone_number: user.phone_number,
-        plants: plants
-      });
-  
-    } catch (error) {
-      next(error);
-    }
-  });
+    })
+    .catch(error => {
+      res.status(500).json(error);
+    });
+});
 
 module.exports = router
