@@ -24,9 +24,11 @@ server.use(morgan())
 //import server routes
 const authRouter = require("../auth/auth-router")
 const userRouter = require("../users/users-router")
+const plantRouter = require("../plants/plants-router")
 
 server.use("/api/auth", authRouter)
 server.use("/api/users", authenticate, userRouter)
+server.use("/api/plants", plantRouter)
 
 
 server.get('/', (req, res) => {
