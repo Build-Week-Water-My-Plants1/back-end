@@ -4,8 +4,9 @@ const server = express()
 const cors = require('cors')
 const helmet = require('helmet')
 const morgan = require('morgan')
+const cookie_parser = require('cookie-parser')
 
-
+const db = require("../data/db-config")
 const authenticate = require('../middleware/auth-middleware')
 
 //ENV
@@ -15,6 +16,7 @@ dotenv.config()
 
 //middleware
 server.use(express.json())
+server.use(cookie_parser())
 server.use(helmet())
 server.use(cors())
 server.use(morgan())
@@ -24,7 +26,7 @@ const authRouter = require("../auth/auth-router")
 const userRouter = require("../users/users-router")
 
 server.use("/api/auth", authRouter)
-server.use("/api/profile", authenticate, userRouter)
+server.use("/api/users", authenticate, userRouter)
 
 
 server.get('/', (req, res) => {

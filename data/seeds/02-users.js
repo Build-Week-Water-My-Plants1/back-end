@@ -2,7 +2,7 @@ const bcrypt = require("bcryptjs")
 const hash = async password => await bcrypt.hash(password, 13)
 
 exports.seed = async function(knex) {
-  await knex('user').truncate
+  await knex('users').truncate
   await knex('users').insert([
     {
       id: 1,

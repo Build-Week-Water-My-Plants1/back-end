@@ -1,70 +1,89 @@
 const router = require("express").Router()
 const users_model = require("../users/users-model")
+const restricted = require("../middleware/restricted")
+
 
 //GET users
-router.get("/users", async (req, res, next) => {
-    try {
-      const users = await users_model.getUsers()
-  
-      res.status(200).json(users)
-  
-    } catch(err) {
-      next(err)
-    }
-})
+router.get("/", restricted, (req, res) => {
+    users_model.find()
+      .then(users => {
+        res.json(users);
+      })
+      .catch(error => res.send(error));
+});
 
-
+  
 //GET user by ID
-router.get("/users/:id", (req, res, next) => {
-    const { id } = req.params
-
-    users_model
-        .findById(id)
-        .then(user => {
-            if (user) {
-                res.status(200).json(user)
-            } else {
-                res.status(404).json({
-                    message: "Could not find user with given id"
-                })
-            }
-        })
-        .catch(err => {
-        next(err)
-    })    
-
-})
-
-//UPDATE users by ID
-router.put("/users/:id", async (req, res, next) => { 
-    try{
-      const payload = {
-        username: req.body.username,
-        password: await bcrypt.hash(req.body.password, 10),
-        phone_number: req.body.phone_number,
-      }
+router.get("/:id", restricted, (req, res) => {
+    const { id } = req.params;
+    users_model.findById(id)
+      .then(user => {
+        if (user) {
+          res.json(user);
+        } else {
+          res
+            .status(404)
+            .json({ message: "Could not find user with given ID." });
+        }
+      })
+      .catch(error => {
+        res.status(500).json({ message: "Failed to get user" });
+      });
+});  
   
-      const updatedUser = await users_model.updateUser(payload, req.params.id)
-  
-      res.status(200).json(updatedUser)
-  
-    } catch(err) {
-      next(err)
-    }
-})
 
-//DELETE by users ID
-router.delete("/users/id", async (req, res, next) => {
-    try {
-        const { id } = req.params
-        const deleteUser = await users_model.removeUser(id)
-        res.status(200).json({
-            message: `Successfully deleted users profile`
-        })
-    } catch (err) {
-        next(err)
-    }
-})
+//ADD user
+router.post("/", restricted, (req, res) => {
+    const userData = req.body;
+  
+    users_model.add(userData)
+      .then(user => {
+        res.status(201).json(user);
+    })
+    .catch(error => {
+        res.status(500).json({ message: "Failed to add new user." });
+    });
+});  
+
+  
+// UPDATE User
+router.put("/:id", restricted, (req, res) => {
+    const { id } = req.params;
+    const changes = req.body;
+  
+    users_model.findById(id)
+      .then(user => {
+        if (user) {
+          users_model.update(changes, id).then(updatedUser => {
+            delete updatedUser.password;
+            res.json(updatedUser);
+          });
+        } else {
+          res.status(404).json({ message: "Could not find user with given Id." });
+        }
+      })
+      .catch(error => {
+        res.status(500).json({ message: "Failed to update user." });
+      });
+});  
+  
+
+//DELETE User
+router.delete("/:id", restricted, (req, res) => {
+    const { id } = req.params;
+  
+    users_model.remove(id)
+      .then(deleted => {
+        if (deleted) {
+          res.json({ removed: deleted });
+        } else {
+          res.status(404).json({ message: "Could not find user with given Id." });
+        }
+      })
+      .catch(error => {
+        res.status(500).json({ message: "Failed to delete user." });
+      });
+});
 
 
 
