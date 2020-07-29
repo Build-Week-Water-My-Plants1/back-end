@@ -47,13 +47,13 @@ router.post("/", (req, res) => {
 
 
 router.put("/:id", (req, res) => {
-  const { id } = req.params;
+  const { user_id } = req.params;
   const changes = req.body;
 
   plants_model.findById(id)
     .then(plant => {
       if (plant) {
-        plants_model.update(changes, id).then(updatedPlant => {
+        plants_model.update(changes, user_id).then(updatedPlant => {
           res.json(updatedPlant);
         });
       } else {

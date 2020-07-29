@@ -3,6 +3,7 @@ const users_model = require("../users/users-model")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const secret = require("../config/secrets")
+const cors = require("cors")
 
 function generateToken(user) {
     const payload = {

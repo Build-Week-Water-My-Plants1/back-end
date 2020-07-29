@@ -30,7 +30,7 @@ module.exports = {
   
   function update(changes, id) {
     return db("plants")
-      .where({ id })
+      .where({ user_id })
       .update(changes)
       .then(count => {
         return findById(id);
