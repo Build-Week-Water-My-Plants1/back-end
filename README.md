@@ -94,6 +94,7 @@ HTTP Method: GET
 > /api/plants/:id
 
 ## PUT Requests
+HTTP Method: PUT
 
 ### Update User By ID
 > /api/users/:id
@@ -102,6 +103,7 @@ HTTP Method: GET
 > /api/plants/:id
 
 ## DELETE Requests
+HTTP Method: DELETE
 
 ### Delete User By ID
 > /api/users/:id
