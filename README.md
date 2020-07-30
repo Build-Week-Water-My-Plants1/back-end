@@ -1,7 +1,7 @@
 # WATER MY PLANTS - BACK END
 
 ## Deployed to HEROKU
-BASE URL:  - https://water-my-plants1.herokuapp.com/
+BASE URL:  - https://water-my-plant1.herokuapp.com/
 
 
 # API ENDPOINTS
