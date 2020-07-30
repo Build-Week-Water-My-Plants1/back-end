@@ -9,7 +9,6 @@ module.exports = {
   find,
   findBy,
   findById,
-  add,
   update,
   remove
 };
@@ -35,13 +34,13 @@ function findById(id) {
     .first();
 }
 
-function add(users) {
-  return db("users")
-    .insert(users)
-    .then(ids => {
-      return findById(ids[0]);
-    });
-}
+// function add(users) {
+//   return db("users")
+//     .insert(users)
+//     .then(ids => {
+//       return findById(ids[0]);
+//     });
+// }
 
 function update(changes, id) {
   return db("users")

@@ -2,10 +2,10 @@
 exports.seed = async function(knex) {
   await knex('plants').truncate
   await knex('plants').insert([
-    {id: 1, nickname: 'Croton', species: 'Common Croton', h2oFrequency: 'once a week', plant_users_id: 1},
-    {id: 2, nickname: 'Dandelion', species: 'Common Dandelion', h2oFrequency: 'twice a week', plant_users_id: 2},
-    {id: 3, nickname: 'Orchid', species: 'Common Orchid', h2oFrequency: 'twice a week', plant_users_id: 3},
-    {id: 4, nickname: 'Dracaena', species: 'Common Dracaena', h2oFrequency: 'once a month', plant_users_id: 4},
-    {id: 5, nickname: 'Bamboo', species: 'Common Bamboo', h2oFrequency: 'once a month', plant_users_id: 5}
+    {id: 6, nickname: 'Croton1', species: 'Common Croton1', h2oFrequency: 'once a week1', plant_users_id: 6},
+    {id: 7, nickname: 'Dandelion1', species: 'Common Dandelion1', h2oFrequency: 'twice a week1', plant_users_id: 7},
+    {id: 8, nickname: 'Orchid1', species: 'Common Orchid1', h2oFrequency: 'twice a week1', plant_users_id: 8},
+    {id: 9, nickname: 'Dracaena1', species: 'Common Dracaena1', h2oFrequency: 'once a month1', plant_users_id: 9},
+    {id: 10, nickname: 'Bamboo1', species: 'Common Bamboo1', h2oFrequency: 'once a month1', plant_users_id: 10}
   ])
 } 
