@@ -6,6 +6,8 @@ BASE URL:  - https://water-my-plant1.herokuapp.com/
 
 # API ENDPOINTS
 
+## POST Requests
+
 ## Register a New User
 
 HTTP Method: POST
@@ -50,3 +52,61 @@ EXAMPLE
   }
 
 ```
+## Add Plant
+
+HTTP Method: POST
+URL: api/plants
+
+### Body 
+| NAME | TYPE | REQUIRED |
+|------|------|----------|
+| id | integer | Yes |
+| nickname | string | Yes |
+| species | string | Yes |
+| h2oFrequency | string | Yes |
+| plant_users_id | integer | Yes |
+
+EXAMPLE
+
+```
+  {
+    "id": 2,
+    "nickname": "Croton",
+    "species": "Croton",
+    "h2oFrequency": "every day",
+    "plant_users_id": 2
+  }
+```
+
+## GET Requests
+HTTP Method: GET
+
+### Get Users
+> /api/users
+
+### Get Users By ID
+> /api/users/:id
+
+### Get Plants
+> /api/plants
+
+### Get Plants By ID 
+> /api/plants/:id
+
+## PUT Requests
+
+### Update User By ID
+> /api/users/:id
+
+### Update Plant By ID
+> /api/plants/:id
+
+## DELETE Requests
+
+### Delete User By ID
+> /api/users/:id
+
+### Delete Plant By ID
+> /api/plants/:id
+
+
