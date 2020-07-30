@@ -15,11 +15,13 @@ dotenv.config()
 
 
 //middleware
+server.use(cors())
 server.use(express.json())
 server.use(cookie_parser())
 server.use(helmet())
-server.use(cors())
 server.use(morgan())
+
+
 
 //import server routes
 const authRouter = require("../auth/auth-router")
