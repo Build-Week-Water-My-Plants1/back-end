@@ -15,7 +15,7 @@ exports.up = async function(knex) {
             .integer("plant_users_id")
             .unsigned()
             .notNullable()
-            .references("users_id")
+            .references("id")
             .inTable("users")
             .onUpdate('CASCADE')
             .onDelete('CASCADE')
