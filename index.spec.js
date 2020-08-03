@@ -103,7 +103,7 @@ describe("test to check if API is running", () => {
           id: 10,
           nickname: "newname",
           species: "newspecies",
-          h2oFrequency: "alot",
+          h2oFrequency: "time",
           plant_users_id: 1
         });
       });
@@ -146,10 +146,10 @@ describe("test to check if API is running", () => {
         expect(res2.statusCode).toBe(200);
         expect(res2.body).toMatchObject({
           id: 1,
-          nickname: "Croton",
-          species: "Common Croton",
-          h2oFrequency: "once a week",
-          plant_users_id: 1
+          nickname: "Croton1",
+          species: "Common Croton1",
+          h2oFrequency: "once a week1",
+          plant_users_id: 6
         });
       });
 })
