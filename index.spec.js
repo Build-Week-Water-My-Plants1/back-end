@@ -111,8 +111,8 @@ describe("test to check if API is running", () => {
     
       it("POST  & PUT plants/:id", async () => {
         const res1 = await supertest(serverAPI).post("/api/auth/login").send({
-          username: "Jane",
-          password: "123"
+          username: "Tatyana",
+          password: "123abc"
         });
         
         const res2 = await supertest(serverAPI).put("/api/auth/plants/1")
