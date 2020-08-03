@@ -19,7 +19,7 @@ function generateToken(user) {
 router.post("/register", async (req, res, next) => {
     const { username, password, phone_number } = req.body
   
-    const hash = bcrypt.hash(password, 10)
+    const hash = bcrypt.hashSync(password, 10)
     users_model.add({
     username,
     phone_number,
