@@ -4,11 +4,11 @@ exports.up = async function(knex) {
         table
             .increments("id")
         table
-            .string("phone_number")
+            .string("username")
             .notNullable()
             .unique()
         table
-            .string("username")
+            .string("phone_number")
             .notNullable()
             .unique()
         table.string("password").notNullable()

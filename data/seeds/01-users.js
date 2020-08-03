@@ -5,15 +5,15 @@ exports.seed = async function(knex) {
   await knex('users').truncate
   await knex('users').insert([
     {
-      id: 1,
-      username: "NewUser",
-      phone_number: 5543038,
+      id: 6,
+      username: "NewUser5",
+      phone_number: 1234,
       password: `${await hash("password")}`
     },
     {
-      id: 2,
-      username: "NewUser2",
-      phone_number: 55430381,
+      id: 7,
+      username: "NewUser6",
+      phone_number: 12345,
       password: `${await hash("password")}`
     }
   ])

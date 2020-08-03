@@ -3,7 +3,6 @@ const users_model = require("../users/users-model")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const secret = require("../config/secrets")
-const cors = require("cors")
 
 function generateToken(user) {
     const payload = {
@@ -20,7 +19,7 @@ function generateToken(user) {
 router.post("/register", async (req, res, next) => {
     const { username, password, phone_number } = req.body
   
-    const hash = bcrypt.hashSync(password, 10)
+    const hash = bcrypt.hash(password, 10)
     users_model.add({
     username,
     phone_number,
