@@ -50,7 +50,7 @@ router.post('/login', (req, res) => {
         const token = generateToken(user); // new line
         // the server needs to return the token to the client
         // this doesn't happen automatically like it happens with cookies
-        res.status(201).json({
+        res.status(200).json({
           message: `Welcome ${user.username}!, have a token...`,
           token, // attach the token as part of the response
         });
